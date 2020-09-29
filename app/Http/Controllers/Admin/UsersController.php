@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
+
+    public function _construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +20,8 @@ class UsersController extends Controller
      */
     public function index()
     {
-        return 'Users Index here ';
+        $users = User::all();
+        return view('admin.users.index')->with('users', $users);
     }
 
     /**
