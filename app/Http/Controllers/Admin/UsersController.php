@@ -87,8 +87,11 @@ class UsersController extends Controller
     public function update(Request $request, User $user)
     {
         // Atualizando através do relacionamento Users with Roles belongsToMany
-
         $user->roles()->sync($request->roles);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->save();
+
         return redirect()->route('admin.users.index');
     }
 
