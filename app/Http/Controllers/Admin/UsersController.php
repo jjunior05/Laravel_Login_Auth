@@ -105,13 +105,17 @@ class UsersController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(User $user, Request $request)
     {
         if (Gate::denies('delete-users')) {
             return redirect()->route('admin.users.index');
         }
         $user->roles()->detach();
-        $user->delete();
+        if ($user->delete()) {
+            $request->session()->flash('success', 'User has been deleted!!!');
+        } else {
+            $request->session()->flash('error', 'There was an error deleting the user' . $user->name);
+        }
 
         return redirect()->route('admin.users.index');
     }
